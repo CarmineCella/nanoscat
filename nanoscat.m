@@ -70,14 +70,24 @@ for j0 = 0:floor(log2(N))
 end
 
 %% plot filters
+close all
 figure
-subplot (2, 1, 1)
-for i = 1:numel(psif{1})
-    plot (psif{1}{i}{1})
+for m = 1:numel(psif)
+    figure
+    for i = m:numel(psif{m})
+        fprintf ('psi %d %d, length = %d\n', m, i, length (psif{m}{i}{1}));
+        v = psif{m}{i}{1};
+        plot (v)
+        hold on
+    end
+end
+%%
+figure
+for i = 1:numel(phif)
+    plot (phif{i})
+    fprintf ('phi %d, length = %d\n', i, length(phif{i}))
     hold on
 end
-subplot (2, 1, 2)
-plot (phif{1})
 
 %% convolve and subsample
 
@@ -152,15 +162,36 @@ for m=1:M+1
     end
 end
 
-% yc = fft (y);
-% U1 = zeros(numel(psif{1}), length (y));
-% S1 = zeros(numel(psif{1}), length (y));
-% 
-% for i = 1:numel(psif{1})
-%     U1(i, :) = ifft(yc .* psif{1}{i}{1});
-% end
+%% format output -------------
 
-%% format output
+yc = fft (y);
+U1 = zeros(numel(psif{1}), length (y));
+S1 = zeros(numel(psif{1}), length (y));
+
+for i = 1:numel(psif{1})
+    U1(i, :) = abs(ifft(yc .* psif{1}{i}{1}));
+end
+
+figure
+imagesc (U1);
+
+O1 = SC{2};
+maxlen = length (O1{1}.signal);
+nlambdas = numel(O1);
+
+Scoeff = zeros(nlambdas, maxlen);
+
+for i = 1:nlambdas
+    itp = interpft(O1{i}.signal, maxlen);
+    %sig = O1{i}.signal;
+    %Scoeff(i, 1:length(sig)) = sig;
+    Scoeff(i, :) = itp;
+end
+
+figure 
+imagesc (Scoeff)
+
+%%
 
 for m = 1:M+1
     for i = 1:numel(SJ{m})

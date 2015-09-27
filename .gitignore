@@ -2,4 +2,4 @@
 *.mat
 .DS_Store
 *.pkf
-/results
+/temp
