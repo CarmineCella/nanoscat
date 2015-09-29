@@ -10,7 +10,7 @@ J = 19;					% Maximal scale corresponding to T=Q*2^(J/Q+1)
 
 %% load audio
 
-[y, sr] = audioread ('../../datasets/various_data/5_notes.wav');
+[y, sr] = audioread ('../../datasets/various_data/3_onsets.wav');
 y = y(1:2^floor(log2(length(y)))); % truncate to power of 2
 y = y / norm(y);
 
@@ -71,7 +71,6 @@ end
 
 %% plot filters
 close all
-figure
 for m = 1:numel(psif)
     figure
     for i = m:numel(psif{m})
@@ -82,11 +81,11 @@ for m = 1:numel(psif)
     end
 end
 %%
-figure
+
 for i = 1:numel(phif)
+    figure
     plot (phif{i})
     fprintf ('phi %d, length = %d\n', i, length(phif{i}))
-    hold on
 end
 
 %% convolve and subsample
@@ -171,7 +170,7 @@ S1 = zeros(numel(psif{1}), length (y));
 for i = 1:numel(psif{1})
     U1(i, :) = abs(ifft(yc .* psif{1}{i}{1}));
 end
-
+%%
 figure
 imagesc (U1);
 
