@@ -8,7 +8,7 @@ close all
 
 %% parameters
 
-M = 3;					% Scattering order
+M = 2;					% Scattering order
 J = 11;					% Maximal scale corresponding to T=Q*2^(J/Q+1)
 
 fprintf ('computing %d orders, with %d bands (equiv to smoothing each %d samples)\n', M, J, 2^J);
@@ -76,16 +76,15 @@ end
 
 %% plot filters
 close all
-%for m = 1:numel(psif)
-m = 1;
-figure
-for i = m:numel(psif{m})
-    fprintf ('psi %d %d, length = %d\n', m, i, length (psif{m}{i}{1}));
-    v = psif{m}{i}{1};
-    plot (v)
-    hold on
+for m = 1:numel(psif)
+    figure
+    for i = m:numel(psif{m})
+        fprintf ('psi %d %d, length = %d\n', m, i, length (psif{m}{i}{1}));
+        v = psif{m}{i}{1};
+        plot (v)
+        hold on
+    end
 end
-%end
 title ('Band pass filters (PSI)');
 
 figure
@@ -139,7 +138,7 @@ for m=1:M+1
                 if ds2 > 1
                     out = out(1:ds2:end)*sqrt(ds2);
                 end
-                
+                fprintf ('\ts = %d, j = %d, ds = %ds\n', s, j, ds);
                 children{raster}.signal = out;
                 children{raster}.meta.resolution = res+ds;
                 children{raster}.meta.scale = (infos.scale>=0)*infos.scale*number_of_j + j;
