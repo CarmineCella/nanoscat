@@ -1,7 +1,7 @@
 % nanoscat demo, (c) 2015 carmine e. cella
 %
-% very simplified implementation of scattering transform for 1D signals
-% for pedagogical purpouses (dyadic wavelets)
+% basic pedagogical implementation of scattering transform for 1D signals
+% (dyadic wavelets only)
 %
 clear all
 close all
