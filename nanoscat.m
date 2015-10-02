@@ -9,7 +9,7 @@ close all
 %% parameters
 
 M = 2;					% Scattering order
-J = 11;					% Maximal scale corresponding to T=Q*2^(J/Q+1)
+J = 12;					% Maximal scale corresponding to T=Q*2^(J/Q+1)
 
 fprintf ('computing %d orders, with %d bands (equiv to smoothing each %d samples)\n', M, J, 2^J);
 
@@ -76,7 +76,8 @@ end
 
 %% plot filters
 close all
-for m = 1:numel(psif)
+%for m = 1:numel(psif)
+    m = 1;
     figure
     for i = m:numel(psif{m})
         fprintf ('psi %d %d, length = %d\n', m, i, length (psif{m}{i}{1}));
@@ -84,7 +85,7 @@ for m = 1:numel(psif)
         plot (v)
         hold on
     end
-end
+%end
 title ('Band pass filters (PSI)');
 
 figure
@@ -94,6 +95,15 @@ for i = 1:numel(phif)
     fprintf ('phi %d, length = %d\n', i, length(phif{i}))
 end
 title ('Low pass filters (PHI)')
+
+figure
+accum = zeros (numel(psif{1}{1}), 1);
+for i = 1 : numel(psif{1})
+    accum = accum + abs (psif{1}{i}{1});
+end
+accum = accum + abs (phif{1});
+plot (accum, 'k')
+title ('Littlewood-Paley')
 
 %% convolve and subsample
 
@@ -138,7 +148,7 @@ for m=1:M+1
                 if ds2 > 1
                     out = out(1:ds2:end)*sqrt(ds2);
                 end
-                fprintf ('\ts = %d, j = %d, ds = %ds\n', s, j, ds);
+                fprintf ('\tPSI - s = %d, j = %d, ds2 = %d, sz sigf = %d\n', s, j, ds2, length (sigf));
                 children{raster}.signal = out;
                 children{raster}.meta.resolution = res+ds;
                 children{raster}.meta.scale = (infos.scale>=0)*infos.scale*number_of_j + j;
@@ -157,14 +167,16 @@ for m=1:M+1
         number_of_j = length(psif{1});
         smoothed_sig.meta=infos;
         ds = downsampling_fac(infos.resolution,number_of_j)^2;
+        
         smoothed_sig.signal = ifft(sigf .* phif{infos.resolution+1});
         if ds > 1
             smoothed_sig.signal = smoothed_sig.signal(1:ds:end)*sqrt(ds);
         end
+         fprintf ('PHI - infos.res = %d, numofj = %d, ds = %d, sz sigf = %d\n\n', ...
+            infos.resolution, number_of_j, ds, length (sigf));
         
         smoothed_sig.meta.orignorm = norm(sig(:));
         SJ{m}{s} = smoothed_sig;
-        
     end
 end
 

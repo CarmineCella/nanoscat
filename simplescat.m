@@ -7,6 +7,8 @@ clear all
 close all
 
 imunit = i;
+downsampling_fac =@(res,j) max(0,floor(j * log2(2)-res-1));
+
 
 %% load audio
 
@@ -20,47 +22,58 @@ M = 2;
 J = 11;
 
 %% compute filters
-res = 0;
+
 psi = {};
 phi = {};
 
 for res = 0 : floor (log2(N));
     N0 = N / 2^res;
     
-    for j = 0 : J - 1
+    if N0 <= N/2^J;
+        break;
+    end
+    
+    for j = 0 : J -1
         v = zeros(1, N0);
         
-        sz = N0/2^j;
-        if sz <= 2
-            continue
+        sz = N0 /2^j;
+        if sz <= N/2^J;
+            break;
         end
-        v(1:sz) = .5*(1 - cos(2*pi*(0:sz-1)'/(sz))); % hanning-zero
+
+        s = .5*(1 - cos(2*pi*(0:sz-1)'/(sz)));
+        v(1:sz) = s .^1;% hanning-zero
         v(sz) = 0;
         
         psi{res+1}{res+j+1} = v';
-        if j == 0
-            phi{res+1} = 1 ./ (1 + v');
+ 
+        if (res+j == J - 1)
+            f = zeros(1, N0);
+            f(end-(sz/2)+1:end) = v(1:(sz/2));
+            f(1:(sz/2))=v((sz/2)+1:sz);
+            phi{res+1} = f';
         end
     end
 end
 
 %% plot filters
-%for res = 1 : numel(psi)
-    res = 1;
-    figure
-    for j = 1:numel(psi{res})
-        plot (psi{res}{j});
-        hold on
-    end
-%end
-title ('PSI (higher resolution)')
 
+
+res = 1;
 figure
-for res = 1:numel(phi)
-    plot (phi{res});
+for j = 1:numel(psi{res})
+    plot (psi{res}{j});
     hold on
 end
-title ('PHI')
+plot (phi{res});
+%%
+accum = zeros (numel(psi{1}{1}), 1);
+for i = 1 : numel(psi{1})
+    accum = accum + abs (psi{1}{i});
+end
+accum = accum + abs (phi{1});
+plot (accum, 'k')
+title ('PSI/PHI  at higher resolution')
 
 %% compute scattering
 U = {};
@@ -74,14 +87,18 @@ for m = 1:M+1
         continue;
     end
     
+    res = 1;
     for s = 1:numel(U{m})
         sigf = fft (U{m}{s});
-        
+        res = (log2(N) - (log2 (length(sigf)))) + 1;
+ 
         if m<=M
             vindex = 1;
             paths = {};
-            for j = s: numel(psi{1})-1
-                paths{vindex} = abs(ifft(sigf .* psi{1}{j})); % FIXME: downsampling is missing5
+            for j = s : numel(psi{res})
+                ds = 2^(j-s);
+                c = abs(ifft(sigf .* psi{res}{j}));
+                paths{vindex} = c(1:ds:end);
                 vindex = vindex + 1;
             end
             
@@ -90,10 +107,13 @@ for m = 1:M+1
                 hindex=hindex+1;
             end
         end
-        
-        S{m}{s} = abs (ifft(sigf .* phi{1}));
+        ds = (J - res)^2;
+        c = abs (ifft(sigf .* phi{res}));
+        if ds > 1
+        c = c(1:ds:end);
+        end
+        S{m}{s} = c; 
     end
-    
 end
 
 %% plot S coefficients
@@ -107,9 +127,9 @@ for m =1:M+1
     Scoeff = zeros(nlambdas, maxlen);
     
     for i = 1:nlambdas        
-        Scoeff(i, 1:length(sig)) = Out{i};
-        %itp = interpft(Out{i}.signal, maxlen);
-        %Scoeff(i, :) = itp;
+        %Scoeff(i, 1:length(Out{i})) = Out{i};
+        itp = interpft(Out{i}, maxlen);
+        Scoeff(i, :) = itp;
     end
     
     figure
