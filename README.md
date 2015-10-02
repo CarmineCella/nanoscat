@@ -1,8 +1,6 @@
-# nanoscat
+# [nanoscat]
 
-Pedagogical implementation of the scattering transform; please see http://www.di.ens.fr/data/software/ for more information.
-
-More complete implementation can be found using the following links:
+Pedagogical implementation of the scattering transform; for more complete implementations please see:
 
 [ScatNetLight](https://github.com/edouardoyallon/ScatNetLight/releases) by E. Oyallon
 
