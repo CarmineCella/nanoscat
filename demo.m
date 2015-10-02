@@ -13,7 +13,7 @@ M = 2; % orders
 J = 12; % maximal scale
 
 %% load and zero pad audio
-[sig, N] = nanoscat_load ('samples/drum1_90.wav');
+[sig, N, len] = nanoscat_load ('samples/drum1_90.wav');
 sig = sig / norm(sig); % normalization
 
 assert (J <= log2(N));
