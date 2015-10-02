@@ -19,7 +19,7 @@ sig = sig / norm(sig); % normalization
 assert (J <= log2(N));
 
 %% compute filters
-[psi, phi, lp] = nanoscat_filters (N, J);
+[psi, phi, lp] = nanoscat_make_filters (N, J);
 
 %% plot filters
 nanoscat_display_filters (psi, phi, lp);

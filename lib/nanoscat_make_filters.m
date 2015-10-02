@@ -1,4 +1,4 @@
-function [psi, phi, lp] = nanoscat_filters(N, J)
+function [psi, phi, lp] = nanoscat_make_filters(N, J)
 psi = {};
 phi = {};
 
