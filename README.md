@@ -7,6 +7,4 @@ Pedagogical implementation of the scattering transform; for more complete implem
 [scattering.m](https://github.com/lostanlen/scattering.m) by V. Lostanlen
 
 
-(c) 2015 carmine e. cella
-
-ENS Paris
+(c) 2015 carmine e. cella, ENS Paris
