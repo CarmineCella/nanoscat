@@ -6,6 +6,8 @@
 clear all
 close all
 
+addpath ('lib');
+
 %% params
 M = 2; % orders
 J = 12; % maximal scale
