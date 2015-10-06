@@ -14,10 +14,9 @@ for res = 0:(nResolutions-1)
     end
     
     for j = 0 : J -1
-        v = zeros(1, N0);
         
         sz = floor ((N0 /2^j));
-        if sz <= N/2^J;
+        if sz <= N/2^J
             break;
         end
         
@@ -30,7 +29,7 @@ for res = 0:(nResolutions-1)
                 v = 2 * exp(- ((0:(N0-1))/N - xi).^2 * 10 * log(2) / xi^2 ).';
         end
         
-        psi{res+1}{res+j+1} = v';
+        psi{res+1}{res+j+1} = v;
         
         if (res+j == J - 1)
             f = zeros(1, N0);
