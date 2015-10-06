@@ -1,4 +1,4 @@
-function [psi, phi, lp] = nanoscat_make_filters(N, J)
+function [psi, phi, lp] = nanoscat_make_filters(N, J, shape)
 nResolutions = 1 + floor(log2(N));
 psi = cell(1, nResolutions);
 phi = cell(1, nResolutions);
