@@ -52,4 +52,5 @@ for i = 1 : numel(psi{1})
     lp = lp + 0.5 * (abs(psi{1}{i})).^2;
 end
 lp = lp + abs(phi{1}).^2;
+lp(2:end) = (lp(2:end) + lp(end:-1:2)) * .5;
 end
