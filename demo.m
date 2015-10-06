@@ -3,8 +3,6 @@
 % basic pedagogical implementation of scattering transform for 1D signals
 % (dyadic wavelets only)
 %
-clear all
-close all
 
 addpath ('lib');
 
