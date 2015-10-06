@@ -1,4 +1,4 @@
-function [sig, N, len] = nanoscat_load (filename)
+function [sig, N, len, sr] = nanoscat_load (filename)
 [y, sr] = audioread (filename);
 len=length(y);
 N = 2^(floor(log2(len)) + 1);
