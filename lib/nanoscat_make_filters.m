@@ -1,8 +1,9 @@
 function [psi, phi, lp] = nanoscat_make_filters(N, J)
-psi = {};
-phi = {};
+nResolutions = 1 + floor(log2(N));
+psi = cell(1, nResolutions);
+phi = cell(1, nResolutions);
 
-for res = 0 : floor (log2(N));
+for res = 0:(nResolutions-1)
     N0 = N / 2^res;
     
     if N0 <= N/2^J;
