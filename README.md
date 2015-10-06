@@ -1,6 +1,7 @@
 # [nanoscat]
 
-Pedagogical implementation of the scattering transform; for more complete implementations please see:
+Pedagogical implementation of scattering transform for 1D signals
+(dyadic wavelets only); for more complete implementations please see:
 
 [ScatNetLight](https://github.com/edouardoyallon/ScatNetLight/releases) by E. Oyallon
 

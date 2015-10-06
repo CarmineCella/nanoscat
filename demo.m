@@ -17,7 +17,7 @@ sig = sig / norm(sig); % normalization
 assert (J < log2(N));
 
 %% compute filters
-[psi, phi, lp] = nanoscat_make_filters (N, J, 'hanning');
+[psi, phi, lp] = nanoscat_make_filters (N, J, 'gaussian');
 
 %% plot filters
 nanoscat_display_filters (psi, phi, lp);
