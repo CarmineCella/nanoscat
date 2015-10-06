@@ -1,11 +1,11 @@
 function nanoscat_display_filters (psi, phi, lp)
 res = 1;
-figure
+hold on
 for j = 1:numel(psi{res})
     plot (psi{res}{j});
-    hold on
 end
 plot (phi{res});
 plot (lp, 'k')
-title ('PSI/PHI  at higher resolution (and Littlewood-Paley)')
+title ('PSI/PHI  at higher resolution (and Littlewood-Paley)');
+hold off
 end
