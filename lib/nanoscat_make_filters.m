@@ -14,8 +14,7 @@ for res = 0:(nResolutions-1)
     end
     
     for j = 0 : J -1
-        
-        sz = floor ((N0 /2^j));
+        sz = floor ((N0 /2^j) .* 0.8)
         if sz <= N/2^J
             break;
         end
@@ -37,7 +36,7 @@ for res = 0:(nResolutions-1)
                     f = zeros(N0, 1);
                     half = floor (sz/2);
                     f(end-half+1:end) = v(1:half);
-                    f(1:half)=v(half+1:sz);
+                    f(1:half)=v(half+1:half+half);
                     phi{res+1} = f;
                 case 'gaussian'
                     bw = 0.4 * 2^(-1+J);
