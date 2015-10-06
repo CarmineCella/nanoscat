@@ -21,9 +21,14 @@ for res = 0:(nResolutions-1)
             break;
         end
         
-        s = (1 - cos(2*pi*(0:sz-1)'/(sz))); % hanning-zero-zero
-        v(1:sz) = s;
-        v(sz) = 0;
+        switch shape
+            case 'hanning'
+                v = zeros(N0, 1);
+                v(1:(sz-1)) = (1 - cos(2*pi*(0:(sz-2))/(sz)));
+            case 'gaussian'
+                xi = 0.4 * 2^(-j);
+                v = 2 * exp(- ((0:(N0-1))/N - xi).^2 * 10 * log(2) / xi^2 ).';
+        end
         
         psi{res+1}{res+j+1} = v';
         
