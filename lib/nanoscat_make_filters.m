@@ -1,4 +1,7 @@
 function [psi, phi, lp] = nanoscat_make_filters(N, J, shape)
+if nargin < 3
+    shape = 'gaussian';
+end
 nResolutions = 1 + floor(log2(N));
 psi = cell(1, nResolutions);
 phi = cell(1, nResolutions);
