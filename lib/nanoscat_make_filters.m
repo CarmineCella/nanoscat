@@ -32,11 +32,17 @@ for res = 0:(nResolutions-1)
         psi{res+1}{res+j+1} = v;
         
         if (res+j == J - 1)
-            f = zeros(1, N0);
-            half = floor (sz/2);
-            f(end-half+1:end) = v(1:half);
-            f(1:half)=v(half+1:sz);
-            phi{res+1} = f';
+            switch shape
+                case 'hanning'
+                    f = zeros(N0, 1);
+                    half = floor (sz/2);
+                    f(end-half+1:end) = v(1:half);
+                    f(1:half)=v(half+1:sz);
+                    phi{res+1} = f;
+                case 'gaussian'
+                    bw = 0.4 * 2^(-1+J);
+                    phi{res+1} = exp( - (0:(N0-1)).^2 * 10 * log(2) / bw^2).';
+            end
         end
     end
 end
